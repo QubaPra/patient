@@ -29,33 +29,33 @@ const PatientList: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Patient List</h2>
-      <Link to="./add">Add Patient</Link>
-      <table>
+    <div className="max-w-4xl mx-auto mt-8 window text-white p-8 rounded-lg">
+      <h2 className="text-2xl font-semibold mb-4">Patient List</h2>
+      <Link to="./add" className="text-black font-semibold mb-4 block">+ Add Patient</Link>
+      <table className="w-full">
         <thead>
           <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>PESEL</th>
-            <th>Street</th>
-            <th>City</th>
-            <th>Zip Code</th>
-            <th>Actions</th>
+            <th className="text-left">First Name</th>
+            <th className="text-left">Last Name</th>
+            <th className="text-left">PESEL</th>
+            <th className="text-left">Street</th>
+            <th className="text-left">City</th>
+            <th className="text-left">Zip Code</th>
+            <th className="text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
           {patients.map(patient => (
-            <tr key={patient.id}>
-              <td>{patient.first_name}</td>
-              <td>{patient.last_name}</td>
-              <td>{patient.pesel}</td>
-              <td>{patient.street}</td>
-              <td>{patient.city}</td>
-              <td>{patient.zip_code}</td>
+            <tr key={patient.id} className="border-b border-white-900 ">
+              <td className="px-0 py-2">{patient.first_name}</td>
+              <td className="px-0 py-2">{patient.last_name}</td>
+              <td className="px-0 py-2">{patient.pesel}</td>
+              <td className="px-0 py-2">{patient.street}</td>
+              <td className="px-0 py-2">{patient.city}</td>
+              <td className="px-0 py-2">{patient.zip_code}</td>
               <td>
-                <Link to={`./edit/${patient.id}`}>Edit</Link> |{' '}
-                <button onClick={() => deletePatient(patient.id)}>Delete</button>
+                <Link to={`./edit/${patient.id}`} className="text-black mr-2">Edit</Link>
+                <button className="text-red-500" onClick={() => deletePatient(patient.id)}>Delete</button>
               </td>
             </tr>
           ))}
