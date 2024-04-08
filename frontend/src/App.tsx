@@ -8,9 +8,9 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<PatientList />} />
-        <Route path="/add" element={<AddPatient />} />
-        <Route path="/edit/:id" element={<EditPatient />} />
+        <Route path="/patient/" element={<PatientList />} />
+        <Route path="/patient/add" element={<AddPatient />} />
+        <Route path="/patient/edit/:id" element={<EditPatient />} />
       </Routes>
     </Router>
   );

@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 interface Patient {
   id: number;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   pesel: string;
   street: string;
   city: string;
-  zipCode: string;
+  zip_code: string;
 }
 
 const PatientList: React.FC = () => {
@@ -18,7 +18,7 @@ const PatientList: React.FC = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get('/patients/');
+        const response = await axios.get('http://127.0.0.1:8000/patients/');
         setPatients(response.data);
       } catch (error) {
         console.error('Error:', error);
@@ -31,7 +31,7 @@ const PatientList: React.FC = () => {
   return (
     <div>
       <h2>Patient List</h2>
-      <Link to="/add">Add Patient</Link>
+      <Link to="./add">Add Patient</Link>
       <table>
         <thead>
           <tr>
@@ -47,14 +47,14 @@ const PatientList: React.FC = () => {
         <tbody>
           {patients.map(patient => (
             <tr key={patient.id}>
-              <td>{patient.firstName}</td>
-              <td>{patient.lastName}</td>
+              <td>{patient.first_name}</td>
+              <td>{patient.last_name}</td>
               <td>{patient.pesel}</td>
               <td>{patient.street}</td>
               <td>{patient.city}</td>
-              <td>{patient.zipCode}</td>
+              <td>{patient.zip_code}</td>
               <td>
-                <Link to={`/edit/${patient.id}`}>Edit</Link> |{' '}
+                <Link to={`./edit/${patient.id}`}>Edit</Link> |{' '}
                 <button onClick={() => deletePatient(patient.id)}>Delete</button>
               </td>
             </tr>
@@ -67,7 +67,7 @@ const PatientList: React.FC = () => {
 
 const deletePatient = async (id: number) => {
   try {
-    await axios.delete(`/patients/${id}`);
+    await axios.delete(`http://127.0.0.1:8000/patients/${id}`);
     // Refresh patient list after successful deletion
     window.location.reload();
   } catch (error) {

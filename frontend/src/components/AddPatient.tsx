@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const AddPatient: React.FC = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     pesel: '',
     street: '',
     city: '',
-    zipCode: '',
+    zip_code: '',
   });
   const navigate = useNavigate();
 
@@ -17,14 +16,26 @@ const AddPatient: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     try {
-      await axios.post('/patients/', formData);
-      // Navigate to patient list after successful addition
-      navigate('/');
+      const response = await fetch("http://127.0.0.1:8000/patients/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        const createdPatient = await response.json();
+        console.log("New patient created:", createdPatient);
+        // Navigate to patient list after successful addition
+        navigate('/patient/');
+      } else {
+        console.error("Failed to create patient:", response.status, response.statusText);
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error creating patient:", error);
     }
   };
 
@@ -34,11 +45,11 @@ const AddPatient: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <label>
           First Name:
-          <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
+          <input type="text" name="first_name" value={formData.first_name} onChange={handleChange} />
         </label>
         <label>
           Last Name:
-          <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
+          <input type="text" name="last_name" value={formData.last_name} onChange={handleChange} />
         </label>
         <label>
           PESEL:
@@ -54,7 +65,7 @@ const AddPatient: React.FC = () => {
         </label>
         <label>
           Zip Code:
-          <input type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} />
+          <input type="text" name="zip_code" value={formData.zip_code} onChange={handleChange} />
         </label>
         <button type="submit">Submit</button>
       </form>

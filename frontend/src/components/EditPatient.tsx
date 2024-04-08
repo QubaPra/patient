@@ -3,22 +3,22 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface Patient {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   pesel: string;
   street: string;
   city: string;
-  zipCode: string;
+  zip_code: string;
 }
 
 const EditPatient: React.FC = () => {
   const [formData, setFormData] = useState<Patient>({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     pesel: '',
     street: '',
     city: '',
-    zipCode: '',
+    zip_code: '',
   });
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const EditPatient: React.FC = () => {
   useEffect(() => {
     const fetchPatient = async () => {
       try {
-        const response = await axios.get(`/patients/${id}`);
+        const response = await axios.get(`http://127.0.0.1:8000/patients/${id}`);
         setFormData(response.data);
       } catch (error) {
         console.error('Error:', error);
@@ -43,9 +43,9 @@ const EditPatient: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.put(`/patients/${id}`, formData);
+      await axios.put(`http://127.0.0.1:8000/patients/${id}`, formData);
       // Redirect to patient list after successful update
-      navigate('/');
+      navigate('/patient/');
     } catch (error) {
       console.error('Error:', error);
     }
@@ -57,11 +57,11 @@ const EditPatient: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <label>
           First Name:
-          <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
+          <input type="text" name="firstName" value={formData.first_name} onChange={handleChange} />
         </label>
         <label>
           Last Name:
-          <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
+          <input type="text" name="lastName" value={formData.last_name} onChange={handleChange} />
         </label>
         <label>
           PESEL:
@@ -77,7 +77,7 @@ const EditPatient: React.FC = () => {
         </label>
         <label>
           Zip Code:
-          <input type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} />
+          <input type="text" name="zipCode" value={formData.zip_code} onChange={handleChange} />
         </label>
         <button type="submit">Submit</button>
       </form>
