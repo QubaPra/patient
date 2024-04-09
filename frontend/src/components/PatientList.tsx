@@ -14,6 +14,8 @@ interface Patient {
 
 const PatientList: React.FC = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
+  const [sortKey, setSortKey] = useState('');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -28,24 +30,53 @@ const PatientList: React.FC = () => {
     fetchPatients();
   }, []);
 
+  const handleSort = (key: string) => {
+    if (key === sortKey) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortKey(key);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedPatients = [...patients].sort((a, b) => {
+    if (sortDirection === 'asc') {
+      return a[sortKey as keyof Patient] > b[sortKey as keyof Patient] ? 1 : -1;
+    } else {
+      return a[sortKey as keyof Patient] < b[sortKey as keyof Patient] ? 1 : -1;
+    }
+  });
+
   return (
-    <div className="max-w-4xl mx-auto mt-8 window text-white p-8 rounded-lg">
+    <div className="max-w-4xl bg-gradient-animation mx-auto mt-8 window text-white p-8 rounded-lg">
       <h2 className="text-2xl font-semibold mb-4">Patient List</h2>
       <Link to="./add" className="text-black font-semibold mb-4 block">+ Add Patient</Link>
       <table className="w-full">
         <thead>
           <tr>
-            <th className="text-left">First Name</th>
-            <th className="text-left">Last Name</th>
-            <th className="text-left">PESEL</th>
-            <th className="text-left">Street</th>
-            <th className="text-left">City</th>
-            <th className="text-left">Zip Code</th>
+            <th className="text-left cursor-pointer" onClick={() => handleSort('first_name')}>
+              First Name {sortKey === 'first_name' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th className="text-left cursor-pointer" onClick={() => handleSort('last_name')}>
+              Last Name {sortKey === 'last_name' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th className="text-left cursor-pointer" onClick={() => handleSort('pesel')}>
+              PESEL {sortKey === 'pesel' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th className="text-left cursor-pointer" onClick={() => handleSort('street')}>
+              Street {sortKey === 'street' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th className="text-left cursor-pointer" onClick={() => handleSort('city')}>
+              City {sortKey === 'city' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th className="text-left cursor-pointer" onClick={() => handleSort('zip_code')}>
+              Zip Code {sortKey === 'zip_code' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
             <th className="text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {patients.map(patient => (
+          {sortedPatients.map(patient => (
             <tr key={patient.id} className="border-b border-white-900 ">
               <td className="px-0 py-2">{patient.first_name}</td>
               <td className="px-0 py-2">{patient.last_name}</td>

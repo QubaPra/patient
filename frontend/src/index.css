@@ -7,5 +7,20 @@ body {
 }
 
 .window {
-  background-color: rgb(41, 134, 255);
+  background-color: #2986ff;
+  
+}
+
+/* Define custom animation */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Apply background gradient with animation */
+.bg-gradient-animation {
+  background: linear-gradient(90deg, #006eff 0%, #378eff 50%, #1379ff 100%);
+  background-size: 200% auto;
+  animation: gradientAnimation 3s ease infinite;
 }
